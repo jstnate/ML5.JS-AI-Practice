@@ -6,14 +6,16 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
   <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <form action="">
-        <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg">
-        <input type="submit">
+    <form id="mon-formulaire">
+        <label for="fichier">Sélectionnez une image :</label>
+        <input type="file" id="fichier" name="fichier"><br><br>
+        <button type="submit">Envoyer</button>
     </form>
-    <h1>Image classification using MobileNet and p5.js</h1>
+    <img src="" alt="" id="image-stock">
     <script src="sketch.js"></script>
 </body>
 

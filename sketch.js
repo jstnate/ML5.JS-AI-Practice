@@ -1,29 +1,31 @@
-// Initialize the Image Classifier method with MobileNet. A callback needs to be passed.
-let classifier;
+// Style Transfer with ml5.js Example
 
-// A variable to hold the image we want to classify
-let img;
+// Create a new Style Transfer Instance
+const style = ml5.styleTransfer('data/myModel/', modelLoaded);
 
-function preload() {
-  classifier = ml5.imageClassifier('MobileNet');
-  img = loadImage('images/bird.png');
+// When the model is loaded
+function modelLoaded() {
+  console.log('Model Loaded!');
 }
+// Grab a img element and generate a new image.
+style.transfer(document.getElementById("img"), function(error, result) {
+  img.src = result.src;
+});
 
-function setup() {
-  createCanvas(400, 400);
-  classifier.classify(img, gotResult);
-  image(img, 0, 0);
-}
+imagestock = document.getElementById("image-stock");
 
-// A function to run when we get any errors and the results
-function gotResult(error, results) {
-  // Display error in the console
-  if (error) {
-    console.error(error);
-  } else {
-    // The results are in an array ordered by confidence.
-    console.log(results);
-    createDiv(`Label: ${results[0].label}`);
-    createDiv(`Confidence: ${nf(results[0].confidence, 0, 2)}`);
-  }
-}
+const formulaire = document.getElementById('mon-formulaire');
+formulaire.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const fichier = document.getElementById('fichier').files[0];
+  const reader = new FileReader();
+
+  reader.addEventListener('load', (event) => {
+    const image = new Image();
+    image.src = event.target.result;
+    console.log(fichier)
+    imagestock.src = event.target.result;
+  });
+
+  reader.readAsDataURL(fichier);
+});
