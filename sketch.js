@@ -1,31 +1,38 @@
-// Style Transfer with ml5.js Example
+let mobilenet;
+let img;
+let input;
 
-// Create a new Style Transfer Instance
-const style = ml5.styleTransfer('data/myModel/', modelLoaded);
-
-// When the model is loaded
-function modelLoaded() {
-  console.log('Model Loaded!');
+function modelReady() {
+  console.log('Model is ready!!!');
 }
-// Grab a img element and generate a new image.
-style.transfer(document.getElementById("img"), function(error, result) {
-  img.src = result.src;
-});
 
-imagestock = document.getElementById("image-stock");
+function imageReady() {
+  image(img, 0, 0, width, height);
+  mobilenet.predict(img, gotResult);
+}
 
-const formulaire = document.getElementById('mon-formulaire');
-formulaire.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const fichier = document.getElementById('fichier').files[0];
-  const reader = new FileReader();
+function gotResult(error, results) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(results);
+    createDiv(`Label: ${results[0].label}`);
+    createDiv(`Confidence: ${nf(results[0].confidence, 0, 2)}`);
+  }
+}
 
-  reader.addEventListener('load', (event) => {
-    const image = new Image();
-    image.src = event.target.result;
-    console.log(fichier)
-    imagestock.src = event.target.result;
-  });
+function setup() {
+  createCanvas(400, 400);
+  input = createInput();
+  input.position(20, 20);
+  let button = createButton('submit');
+  button.position(input.x + input.width, 20);
+  button.mousePressed(loadImageFromInput);
+  mobilenet = ml5.imageClassifier('MobileNet', modelReady);
+}
 
-  reader.readAsDataURL(fichier);
-});
+function loadImageFromInput() {
+  let url = input.value();
+  img = createImg("images/"+url+".png", imageReady);
+  img.hide();
+}
